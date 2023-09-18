@@ -1,0 +1,25 @@
+.text{
+    font-size:30px;
+    font-family: 'Times New Roman', Times, serif;
+    margin: 0 200px 0;
+    padding: 10px;
+    border: 2px solid black;
+    text-align: center;
+}
+
+.header{
+    text-align: center;
+    font-size: 40px;
+    font-family: Arial;
+}
+
+.known{
+    color: green
+}
+
+.button{
+    margin: 50px auto;
+    display: block;
+    width: auto;
+    height: 50px;
+}
