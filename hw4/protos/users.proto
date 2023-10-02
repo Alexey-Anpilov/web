@@ -1,0 +1,43 @@
+syntax="proto3";
+
+// Сервер предоставляет информацию о пользователе по id или информацию о всех пользователях
+service UsersInfo {
+    rpc GetInfoById (UserId) returns (UserInfo);
+
+    rpc GetAllUsersInfo (AllUsersRequest) returns (AllUsersResponse);
+}
+
+
+// id пользователя для получения информации о нем
+message UserId {
+    int32 user_id = 1;
+}
+
+
+// Информация о пользователе 
+message UserInfo {
+    // Вложенное сообщение для представления ФИО
+    message FullName { 
+        string first_name = 1;
+        string last_name = 2;
+        string second_name =3;
+    }
+
+    FullName name = 1;
+    
+    string email = 2;
+
+    // Члены семьи
+    map<string, FullName> family = 3;
+}
+
+
+message AllUsersResponse{
+    repeated UserInfo user = 1;
+}
+
+
+message AllUsersRequest{
+    int32 max_result = 1;
+}
+
