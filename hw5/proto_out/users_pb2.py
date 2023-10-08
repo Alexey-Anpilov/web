@@ -13,17 +13,17 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0busers.proto\"\x83\x01\n\x08UserInfo\x12 \n\x04name\x18\x01 \x01(\x0b\x32\x12.UserInfo.FullName\x12\r\n\x05\x65mail\x18\x02 \x01(\t\x1a\x46\n\x08\x46ullName\x12\x12\n\nfirst_name\x18\x01 \x01(\t\x12\x11\n\tlast_name\x18\x02 \x01(\t\x12\x13\n\x0bsecond_name\x18\x03 \x01(\t\"\x18\n\x08UserAddr\x12\x0c\n\x04\x61\x64\x64r\x18\x01 \x01(\tb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0busers.proto\"t\n\x08UserName\x12 \n\x04name\x18\x01 \x01(\x0b\x32\x12.UserName.FullName\x1a\x46\n\x08\x46ullName\x12\x12\n\nfirst_name\x18\x01 \x01(\t\x12\x11\n\tlast_name\x18\x02 \x01(\t\x12\x13\n\x0bsecond_name\x18\x03 \x01(\t\"\x18\n\x08UserAddr\x12\x0c\n\x04\x61\x64\x64r\x18\x01 \x01(\tb\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'users_pb2', _globals)
 if _descriptor._USE_C_DESCRIPTORS == False:
   DESCRIPTOR._options = None
-  _globals['_USERINFO']._serialized_start=16
-  _globals['_USERINFO']._serialized_end=147
-  _globals['_USERINFO_FULLNAME']._serialized_start=77
-  _globals['_USERINFO_FULLNAME']._serialized_end=147
-  _globals['_USERADDR']._serialized_start=149
-  _globals['_USERADDR']._serialized_end=173
+  _globals['_USERNAME']._serialized_start=15
+  _globals['_USERNAME']._serialized_end=131
+  _globals['_USERNAME_FULLNAME']._serialized_start=61
+  _globals['_USERNAME_FULLNAME']._serialized_end=131
+  _globals['_USERADDR']._serialized_start=133
+  _globals['_USERADDR']._serialized_end=157
 # @@protoc_insertion_point(module_scope)

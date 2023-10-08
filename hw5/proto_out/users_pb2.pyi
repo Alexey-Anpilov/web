@@ -4,8 +4,8 @@ from typing import ClassVar as _ClassVar, Mapping as _Mapping, Optional as _Opti
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
-class UserInfo(_message.Message):
-    __slots__ = ["name", "email"]
+class UserName(_message.Message):
+    __slots__ = ["name"]
     class FullName(_message.Message):
         __slots__ = ["first_name", "last_name", "second_name"]
         FIRST_NAME_FIELD_NUMBER: _ClassVar[int]
@@ -16,10 +16,8 @@ class UserInfo(_message.Message):
         second_name: str
         def __init__(self, first_name: _Optional[str] = ..., last_name: _Optional[str] = ..., second_name: _Optional[str] = ...) -> None: ...
     NAME_FIELD_NUMBER: _ClassVar[int]
-    EMAIL_FIELD_NUMBER: _ClassVar[int]
-    name: UserInfo.FullName
-    email: str
-    def __init__(self, name: _Optional[_Union[UserInfo.FullName, _Mapping]] = ..., email: _Optional[str] = ...) -> None: ...
+    name: UserName.FullName
+    def __init__(self, name: _Optional[_Union[UserName.FullName, _Mapping]] = ...) -> None: ...
 
 class UserAddr(_message.Message):
     __slots__ = ["addr"]
