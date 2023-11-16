@@ -1,46 +1,74 @@
-function checkWorkerAndPushManager(){
-    if (!('serviceWorker') in navigator){
-        return false
-    }
+window.addEventListener('load', () => {
+  let supported = checkWorkerAndPushManager()
+  if (supported){
+    subscribe()
+  };
+});
 
-    if (!('PushManager') in window){
-        return false
-    }
-    return true
+
+function urlBase64ToUint8Array(base64String) {
+  const padding = '='.repeat((4 - base64String.length % 4) % 4);
+  const base64 = (base64String + padding)
+    .replace(/-/g, '+')
+    .replace(/_/g, '/');
+  const rawData = window.atob(base64);
+  const outputArray = new Uint8Array(rawData.length);
+  for (let i = 0; i < rawData.length; i++) {
+    outputArray[i] = rawData.charCodeAt(i);
+  }
+  return outputArray;
+}
+
+function checkWorkerAndPushManager () {
+  if (!('serviceWorker' in navigator)) {
+      console.log('Workers are not supported.');
+      return false;
+  }
+  if (!('PushManager' in window)) {
+      console.log('Push notifications are not supported.');
+      return false;
+  }
+  return true
 }
 
 
-function registerServiceWorker(){
-    return navigator.serviceWorker.register('js/sw.js').then(
-        (registration) =>{
-            console.log("Service worker successfully registered.");
-            return registration
-        },
-        (error) => {
-            console.error('Unable to register service worker.', error);
-        });
+async function registerServiceWorker() {
+  return navigator.serviceWorker.register('js/sw.js')
+  .then(function(registration) {
+    console.log('Service worker successfully registered.');
+    return registration;
+  })
+  .catch(function(err) {
+    console.error('Unable to register service worker.', err);
+  });
 }
 
-function askPermission(){
-    return new Promise(function(resolve, reject) {
-        const permissionResult = Notification.requestPermission(function(result){
-            resolve(result);
+
+async function subscribe() {
+  try {
+    // register SW
+    const registration = await registerServiceWorker();
+    
+    // get vapid key from server
+    const response = await fetch('/get-vapid', {mode:"no-cors"});
+    const publicKey = await response.text(); 
+
+    // subscribe and send subscription to server
+    const subscription = await registration.pushManager.subscribe({
+      userVisibleOnly: true,
+      applicationServerKey: urlBase64ToUint8Array(publicKey),
+      });
+
+    const subscribeResponse = await fetch('/send-sub', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(subscription),
+      mode:"no-cors"
     });
 
-    if (permissionResult) {
-        permissionResult.then(resolve, reject);
-      }
-    })
-    .then(function(permissionResult) {
-      if (permissionResult !== 'granted') {
-        throw new Error('We weren\'t granted permission.');
-      }
-    });
-}
-
-
-
-
-if (checkWorkerAndPushManager()){
-    registerServiceWorker()
+  } catch (error) {
+    console.error('Unable to get notifications: ', error);
+  }
 }
