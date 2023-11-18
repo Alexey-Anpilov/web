@@ -2,10 +2,18 @@ import tornado.web
 import asyncio
 import json
 from pywebpush import webpush
+from py_vapid import Vapid
+import base64
+from cryptography.hazmat.primitives import serialization
 
 
 subscriptions = []
 subscription = None
+key = None
+
+def base64UrlEncode(data: bytes) -> str:
+    """Base64Url Encode data."""
+    return base64.urlsafe_b64encode(data).rstrip(b'=').decode('utf-8')
 
 
 class PushHandler(tornado.web.RequestHandler):
@@ -34,8 +42,15 @@ class SendPushHandler(tornado.web.RequestHandler):
 
 class PushCertHandler(tornado.web.RequestHandler):
     def get(self):
-        with open('app_key.txt', 'r') as f:
-            self.write(f.read())
+        keys = Vapid()
+        keys.generate_keys()
+        keys.save_key('private_key.pem')
+        pub_key = base64.urlsafe_b64encode(keys.public_key.public_bytes(
+            serialization.Encoding.X962,
+            serialization.PublicFormat.UncompressedPoint
+        )).rstrip(b'=').decode('utf-8')
+        self.write(pub_key)
+
 
 
 async def make_app():
@@ -45,7 +60,7 @@ async def make_app():
         (r'/get-vapid', PushCertHandler),
         (r'/(.*)', tornado.web.StaticFileHandler, {"path":".", "default_filename": "index.html"}),
     ])
-    app.listen(8000)
+    app.listen(9998)
     await asyncio.Event().wait()
 
 
