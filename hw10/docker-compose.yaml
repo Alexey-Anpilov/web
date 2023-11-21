@@ -1,0 +1,23 @@
+# Версия Docker Compose
+version: "3"
+
+# Сервис для запуска сервера на Python 3
+services:
+  server:
+    build: .
+    ports:
+      - "8000:8000"
+    depends_on:
+      - redis
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/heartbeat"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 5
+  redis:
+    image: redis:alpine
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli ping | grep PONG"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 5
