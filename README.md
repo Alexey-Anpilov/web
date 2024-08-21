@@ -1,2 +1,2 @@
 # web
-Repository for home tasks at the course of web-technologies.
+Репозиторий для практических работ по предмету "Web-технологии". Описание заданий содержатся в папках. 
